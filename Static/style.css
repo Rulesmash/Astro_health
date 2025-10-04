@@ -1,0 +1,100 @@
+/* General styling */
+body {
+    margin: 0;
+    font-family: 'Rajdhani', sans-serif;
+    color: white;
+    background: black;
+    overflow: hidden;
+}
+
+/* Stars background */
+.stars {
+    width: 100%;
+    height: 100%;
+    background: url("https://www.transparenttextures.com/patterns/stardust.png");
+    position: fixed;
+    z-index: -1;
+    animation: twinkle 10s infinite;
+}
+
+@keyframes twinkle {
+    from {opacity: 0.7;}
+    to {opacity: 1;}
+}
+
+/* Main container */
+.container {
+    width: 400px;
+    margin: 60px auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(20, 20, 40, 0.85);
+    box-shadow: 0px 0px 25px cyan;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #00eaff;
+}
+
+/* Form styling */
+.health-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    font-size: 16px;
+    text-align: left;
+}
+
+input {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    background: #222;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px;
+    background: #00eaff;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00ffaa;
+    transform: scale(1.05);
+}
+
+/* Results */
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    animation: glow 2s infinite alternate;
+}
+
+/* Status colors */
+.result.safe { background: rgba(0,255,100,0.2); box-shadow: 0 0 15px lime; }
+.result.warning { background: rgba(255,200,0,0.2); box-shadow: 0 0 15px yellow; }
+.result.critical { background: rgba(255,0,0,0.2); box-shadow: 0 0 15px red; }
+
+@keyframes glow {
+    from {opacity: 0.8;}
+    to {opacity: 1;}
+}

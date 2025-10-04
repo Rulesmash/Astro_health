@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Astronaut Health AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <h1>🚀 Astronaut Health Monitor</h1>
+        <form method="POST" class="health-form">
+            <label>❤️ Heart Rate (BPM):</label>
+            <input type="number" name="heart" required>
+
+            <label>💤 Sleep Hours:</label>
+            <input type="number" name="sleep" required>
+
+            <label>💧 Water Intake (L):</label>
+            <input type="number" name="water" required>
+
+            <label>😰 Stress Level (1-5):</label>
+            <input type="number" name="stress" min="1" max="5" required>
+
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if score is defined %}
+        <div class="result {{ status.split()[0]|lower }}">
+            <h2>Health Score: {{ score }}</h2>
+            <h2>Status: {{ status }}</h2>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
