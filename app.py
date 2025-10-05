@@ -4,11 +4,14 @@ from firebase_admin import credentials, firestore
 from datetime import datetime
 from flask import Response
 import csv
-
+import json, os
 
 app = Flask(__name__)
 
-cred = credentials.Certificate("firebase-key.json")  # make sure this file exists
+
+firebase_key = json.loads(os.environ["FIREBASE_KEY_JSON"])
+cred = credentials.Certificate(firebase_key)
+
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
