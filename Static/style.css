@@ -1,100 +1,126 @@
-/* General styling */
 body {
-    margin: 0;
-    font-family: 'Rajdhani', sans-serif;
-    color: white;
-    background: black;
-    overflow: hidden;
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(circle at bottom, #0b0f25 0%, #000 100%);
+  color: #fff;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* Stars background */
+/* Animated stars background */
 .stars {
-    width: 100%;
-    height: 100%;
-    background: url("https://www.transparenttextures.com/patterns/stardust.png");
-    position: fixed;
-    z-index: -1;
-    animation: twinkle 10s infinite;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: transparent url('https://i.imgur.com/YKY28eT.png') repeat top center;
+  animation: moveStars 200s linear infinite;
+  z-index: -1;
 }
 
-@keyframes twinkle {
-    from {opacity: 0.7;}
-    to {opacity: 1;}
-}
-
-/* Main container */
-.container {
-    width: 400px;
-    margin: 60px auto;
-    padding: 20px;
-    border-radius: 15px;
-    background: rgba(20, 20, 40, 0.85);
-    box-shadow: 0px 0px 25px cyan;
-    text-align: center;
+@keyframes moveStars {
+  from {background-position: 0 0;}
+  to {background-position: 0 10000px;}
 }
 
 h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #00eaff;
+  text-align: center;
+  color: #50eaff;
+  text-shadow: 0 0 20px #00ffff;
+  letter-spacing: 2px;
+  margin-top: 40px;
+  font-size: 2.4em;
 }
 
-/* Form styling */
-.health-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.container {
+  width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
 }
 
-label {
-    font-size: 16px;
-    text-align: left;
+.container:hover {
+  transform: rotateY(5deg) rotateX(5deg) scale(1.02);
 }
 
 input {
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    background: #222;
-    color: #fff;
-    outline: none;
-    font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1em;
+  text-align: center;
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 button {
-    margin-top: 15px;
-    padding: 12px;
-    background: #00eaff;
-    color: black;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 10px #00c6ff;
 }
 
 button:hover {
-    background: #00ffaa;
-    transform: scale(1.05);
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00c6ff;
 }
 
-/* Results */
-.result {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    animation: glow 2s infinite alternate;
+.secondary-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #00eaff;
+  font-weight: bold;
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #00eaff;
+  border-radius: 10px;
+  transition: all 0.3s;
 }
 
-/* Status colors */
-.result.safe { background: rgba(0,255,100,0.2); box-shadow: 0 0 15px lime; }
-.result.warning { background: rgba(255,200,0,0.2); box-shadow: 0 0 15px yellow; }
-.result.critical { background: rgba(255,0,0,0.2); box-shadow: 0 0 15px red; }
+.secondary-btn:hover {
+  background-color: rgba(0, 234, 255, 0.2);
+  transform: scale(1.05);
+}
 
-@keyframes glow {
-    from {opacity: 0.8;}
-    to {opacity: 1;}
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.3);
+  font-size: 1.1em;
+  line-height: 1.5em;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9em;
+  margin-top: 60px;
 }
