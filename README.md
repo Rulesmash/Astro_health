@@ -1,57 +1,61 @@
-# 🪐 AstroHealth: AI-Powered Astronaut Health Monitoring System
+# 🌌 AstroHealth AI  
+### *AI-Powered Astronaut Health Monitoring System* 🚀  
 
-> 🚀 A smart health analysis platform for astronauts — built for the **NASA Space Apps Hackathon 2025**.  
-> Combines real-time physiological data, AI-driven risk analysis, and mission-ready visualization to ensure astronaut safety beyond Earth. 🌍✨
+![banner](https://i.imgur.com/BwW9YrL.jpeg)
 
----
-
-## 🌠 Overview
-
-Astronauts face unique physical and psychological challenges in space — from stress and temperature fluctuations to irregular blood pressure and heart rates.  
-**AstroHealth** is an AI-assisted health monitoring platform designed to:
-
-- Continuously analyze key vitals
-- Provide instant risk assessments
-- Log and visualize health history
-- Offer actionable, mission-safe recommendations  
-
-All data is securely logged to **Firebase Firestore** and viewable through a sleek, **space-themed 3D dashboard**.
+> 🧠 An intelligent, space-themed web app that monitors astronaut vitals, predicts health risks, and offers personalized suggestions — built in just 24 hours for the NASA Space Hackathon 2025.
 
 ---
 
-## 🧬 Features
+## 🪐 Inspiration
 
-✅ **AI-driven Vital Analysis**  
-Automatically evaluates heart rate, blood pressure, stress, and temperature to detect abnormalities.
-
-✅ **Smart Recommendations**  
-Provides personalized health suggestions (e.g., “Hydrate and rest”, “Take deep breaths”).
-
-✅ **Space-Themed UI**  
-Interactive 3D starfield dashboard for mission realism ✨  
-
-✅ **Firebase Integration**  
-Stores all health logs with timestamps in Firestore.
-
-✅ **Previous Logs Dashboard**  
-View, download, or export historical astronaut data as JSON/CSV.
-
-✅ **Containerized for Easy Deployment**  
-Built and deployed in a **Docker container** for universal compatibility.
+Astronauts on long-duration missions face physiological and psychological challenges — from increased heart rate to stress and temperature fluctuations in microgravity.  
+We wanted to build a **simple AI-assisted system** that can track key vitals and provide **real-time insights and advice**, ensuring crew safety and mission continuity.
 
 ---
 
-## 🚀 Tech Stack
+## 🚀 What It Does
 
-| Layer | Technologies Used |
-|-------|--------------------|
-| **Frontend** | HTML, CSS (Space 3D Styling), JavaScript |
-| **Backend** | Flask (Python) |
+**AstroHealth AI** is a web-based health monitor that:
+
+- 🧭 Collects health parameters (Heart Rate, Blood Pressure, Stress, Temperature)  
+- ⚙️ Analyzes health condition instantly using a Flask backend  
+- 🧩 Saves logs to Firebase Firestore with timestamps  
+- 💬 Generates smart suggestions for each abnormal vital  
+- 📜 Displays previous health reports in a glowing space-themed dashboard  
+- 🌠 Runs inside a Docker container for universal deployment  
+
+---
+
+## 🧑‍🚀 Tech Stack
+
+| Layer | Technology |
+|:------|:------------|
+| **Frontend** | HTML, CSS (3D Space UI), Vanilla JS |
+| **Backend** | Python (Flask) |
 | **Database** | Firebase Firestore |
-| **Containerization** | Docker + Gunicorn |
-| **ML/Logic Layer** | Rule-based health condition detection with AI suggestions |
+| **Hosting / Deploy** | Docker + Render |
+| **Extras** | Gunicorn (for production server) |
 
 ---
 
-## 🧩 System Architecture
+## 🧰 Architecture Overview
 
++-----------------------------+
+| Astronaut Dashboard |
+| (HTML + CSS + JS + 3D UI) |
++--------------+--------------+
+|
+v
++-----------------------------+
+| Flask Backend |
+| - REST API for /analyse |
+| - Suggestion Engine (AI) |
+| - Report Logging |
++--------------+--------------+
+|
+v
++-----------------------------+
+| Firebase Firestore |
+| Cloud DB storing all logs |
++-----------------------------+
