@@ -1,23 +1,33 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, Response
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
-from flask import Response
 import csv
-import json, os
+import json
+import os
 
 app = Flask(__name__)
 
+# --- Firebase Setup ---
+try:
+    if os.getenv("FIREBASE_KEY_JSON"):
+        firebase_key = json.loads(os.getenv("FIREBASE_KEY_JSON"))
+        cred = credentials.Certificate(firebase_key)
+    else:
+        cred = credentials.Certificate("firebase-key.json")
 
-firebase_key = json.loads(os.environ["FIREBASE_KEY_JSON"])
-cred = credentials.Certificate(firebase_key)
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+except Exception as e:
+    print("❌ Firebase initialization failed:", e)
+    db = None
 
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+# --- Routes ---
 
 @app.route('/')
 def home():
     return render_template("index.html")
+
 
 @app.route('/analyse', methods=['POST'])
 def analyse():
@@ -30,21 +40,29 @@ def analyse():
         stress = float(data.get("stress", 0))
         temperature = float(data.get("temperature", 0))
 
-        # --- Analysis Logic ---
         status = "Normal"
         issues = []
+        suggestions = []
 
         if heart_rate < 60 or heart_rate > 100:
-            status = "Alert"; issues.append("Abnormal Heart Rate")
+            status = "Alert"
+            issues.append("Abnormal Heart Rate")
+            suggestions.append("Try deep breathing or hydration")
 
         if bp_systolic < 90 or bp_systolic > 120 or bp_diastolic < 60 or bp_diastolic > 80:
-            status = "Alert"; issues.append("Abnormal Blood Pressure")
+            status = "Alert"
+            issues.append("Abnormal Blood Pressure")
+            suggestions.append("Take rest and hydrate")
 
         if stress > 6:
-            status = "Alert"; issues.append("High Stress")
+            status = "Alert"
+            issues.append("High Stress")
+            suggestions.append("Take a mindfulness break")
 
         if temperature > 37.5:
-            status = "Alert"; issues.append("High Temperature")
+            status = "Alert"
+            issues.append("High Temperature")
+            suggestions.append("Cool down and report if it persists")
 
         report = {
             "heart_rate": heart_rate,
@@ -54,25 +72,39 @@ def analyse():
             "temperature": temperature,
             "status": status,
             "issues": issues,
+            "suggestions": suggestions,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
-        db.collection("health_reports").add(report)
+        if db:
+            db.collection("health_reports").add(report)
 
         return jsonify({
             "message": "Health report analyzed and saved.",
             "status": status,
-            "issues": issues
+            "issues": issues,
+            "suggestions": suggestions
         }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/reports')
+def get_reports():
+    try:
+        reports_ref = db.collection("health_reports").order_by("timestamp", direction=firestore.Query.DESCENDING)
+        reports = [doc.to_dict() for doc in reports_ref.stream()]
+        return render_template("reports.html", reports=reports)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/download/csv')
 def download_csv():
     try:
         reports_ref = db.collection("health_reports").order_by("timestamp", direction=firestore.Query.DESCENDING)
-
+        reports = [doc.to_dict() for doc in reports_ref.stream()]
 
         def generate():
             data = csv.StringIO()
@@ -116,17 +148,5 @@ def download_json():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/reports')
-def get_reports():
-    try:
-        reports_ref = db.collection("health_reports").order_by("timestamp", direction=firestore.Query.DESCENDING)
-        reports = [doc.to_dict() for doc in reports_ref.stream()]
-        return render_template("reports.html", reports=reports)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
-
-
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
