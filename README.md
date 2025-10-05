@@ -1,8 +1,6 @@
 # 🌌 AstroHealth AI  
 ### *AI-Powered Astronaut Health Monitoring System* 🚀  
 
-![banner](https://i.imgur.com/BwW9YrL.jpeg)
-
 > 🧠 An intelligent, space-themed web app that monitors astronaut vitals, predicts health risks, and offers personalized suggestions — built in just 24 hours for the NASA Space Hackathon 2025.
 
 ---
