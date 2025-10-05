@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astronaut Health Reports</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #000014, #020024, #090979, #00d4ff);
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px #00d4ff;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,212,255,0.3);
+    }
+    th, td {
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    th {
+      background: rgba(0,212,255,0.2);
+      color: #00d4ff;
+      text-transform: uppercase;
+      font-size: 0.9em;
+    }
+    tr:hover {
+      background: rgba(0,212,255,0.1);
+    }
+    .status-normal {
+      color: #00ffea;
+      font-weight: bold;
+    }
+    .status-alert {
+      color: #ff5757;
+      font-weight: bold;
+    }
+    .issues {
+      font-size: 0.9em;
+      color: #ffae42;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Astronaut Health Reports</h1>
+
+<div style="margin-bottom: 20px;">
+  <a href="/download/csv">
+    <button style="margin-right:10px;">⬇ Download CSV</button>
+  </a>
+  <a href="/download/json">
+    <button>⬇ Download JSON</button>
+  </a>
+</div>
+
+  <table>
+    <tr>
+      <th>Timestamp</th>
+      <th>Heart Rate</th>
+      <th>BP (Sys/Dia)</th>
+      <th>Stress</th>
+      <th>Temp (°C)</th>
+      <th>Status</th>
+      <th>Issues</th>
+    </tr>
+    {% for report in reports %}
+    <tr>
+      <td>{{ report.timestamp }}</td>
+      <td>{{ report.heart_rate }}</td>
+      <td>{{ report.bp_systolic }}/{{ report.bp_diastolic }}</td>
+      <td>{{ report.stress }}</td>
+      <td>{{ report.temperature }}</td>
+      <td class="{% if report.status == 'Alert' %}status-alert{% else %}status-normal{% endif %}">
+        {{ report.status }}
+      </td>
+      <td class="issues">{{ report.issues|join(", ") }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
