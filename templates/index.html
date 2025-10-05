@@ -1,36 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Astronaut Health AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🪐 Astronaut Health Monitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="container">
-        <h1>🚀 Astronaut Health Monitor</h1>
-        <form method="POST" class="health-form">
-            <label>❤️ Heart Rate (BPM):</label>
-            <input type="number" name="heart" required>
+  <div class="stars"></div>
+  <h1>🚀 Astronaut Health Analysis</h1>
 
-            <label>💤 Sleep Hours:</label>
-            <input type="number" name="sleep" required>
+  <div class="container">
+    <form id="healthForm">
+      <input id="heart_rate" type="number" placeholder="Heart Rate (bpm)" required>
+      <input id="bp_systolic" type="number" placeholder="BP Systolic" required>
+      <input id="bp_diastolic" type="number" placeholder="BP Diastolic" required>
+      <input id="stress" type="number" placeholder="Stress Level (1-10)" required>
+      <input id="temperature" type="number" placeholder="Body Temp (°C)" required>
+      
+      <button type="submit">Analyse Health</button>
+    </form>
 
-            <label>💧 Water Intake (L):</label>
-            <input type="number" name="water" required>
+    <div id="result"></div>
+    <a href="/reports" class="secondary-btn">📜 Check Previous Logs</a>
+  </div>
 
-            <label>😰 Stress Level (1-5):</label>
-            <input type="number" name="stress" min="1" max="5" required>
+  <footer>Mission Control Interface © SpaceHealth 2025</footer>
 
-            <button type="submit">Analyze</button>
-        </form>
+  <script>
+    document.getElementById("healthForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        {% if score is defined %}
-        <div class="result {{ status.split()[0]|lower }}">
-            <h2>Health Score: {{ score }}</h2>
-            <h2>Status: {{ status }}</h2>
-        </div>
-        {% endif %}
-    </div>
+      const data = {
+        heart_rate: document.getElementById("heart_rate").value,
+        bp_systolic: document.getElementById("bp_systolic").value,
+        bp_diastolic: document.getElementById("bp_diastolic").value,
+        stress: document.getElementById("stress").value,
+        temperature: document.getElementById("temperature").value
+      };
+
+      const res = await fetch("/analyse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      // Generate suggestions dynamically
+      const suggestions = [];
+      if (result.issues?.includes("Abnormal Heart Rate")) suggestions.push("Try deep breathing exercises or hydration.");
+      if (result.issues?.includes("Abnormal Blood Pressure")) suggestions.push("Avoid caffeine and relax for a few minutes.");
+      if (result.issues?.includes("High Stress")) suggestions.push("Take a 5-min mindfulness break or rest.");
+      if (result.issues?.includes("High Temperature")) suggestions.push("Stay hydrated and cool down.");
+
+      document.getElementById("result").innerHTML = `
+        <span style="color:${result.status === 'Alert' ? '#ff4b5c' : '#4eff8b'}; font-weight:bold;">
+          ${result.status === 'Alert' ? '⚠️ ALERT DETECTED' : '✅ ALL NORMAL'}
+        </span><br>
+        <b>Issues:</b> ${result.issues?.length ? result.issues.join(", ") : "None"}<br>
+        <b>Suggestions:</b> ${suggestions.length ? suggestions.join(" | ") : "All vitals nominal."}
+      `;
+    });
+  </script>
 </body>
 </html>
